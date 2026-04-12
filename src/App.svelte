@@ -49,7 +49,7 @@
     font-size: 13px;
     line-height: 1.4;
   }
-  html[data-theme="dark"] .local-banner {
+  :global(html[data-theme="dark"]) .local-banner {
     background: #1c1708;
     border-bottom-color: #854d0e;
     color: #fde68a;
