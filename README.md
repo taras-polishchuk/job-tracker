@@ -42,3 +42,12 @@ npm run preview # preview the production build locally
 
 Deployment to GitHub Pages happens automatically on every push to `main` via `.github/workflows/deploy.yml`.
 
+## Data export & import
+
+All data is stored in `localStorage` — no account, no server. To back up or transfer your data:
+
+- **Export** — click the ↓ icon in the header to download a `.json` file with all your jobs
+- **Import** — click the ↑ icon and select a previously exported `.json` file to restore
+
+This lets you move data between browsers/devices or keep local backups.
+
