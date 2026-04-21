@@ -1,53 +1,37 @@
 # JobTracker
 
-A Kanban-style app for tracking job applications — where you applied, what stage it's at, and what happens next.
+A Kanban-style job application tracker built with Svelte 5. I built this to manage my own job search — and it became a solid demonstration of real-world app architecture without a backend.
 
 **Live demo:** https://taras-polishchuk.github.io/job-tracker/
 
 ---
 
-## Features
+## What it does
 
-- **Kanban board** — 9 columns: Wishlist, Applied, HR Screen, Tech Interview, Test Task, Final Interview, Offer, Rejected, Ghosted
-- **Add & edit jobs** — company, position, link, platform, priority, tags, notes, cover letter, resume upload
+- **Kanban board** — 9 stages: Wishlist → Applied → HR Screen → Tech Interview → Test Task → Final Interview → Offer → Rejected → Ghosted
+- **Full card detail** — company, position, link, platform, priority, tags, notes, cover letter, resume upload
 - **Search & filters** — full-text search with highlight, filter by status / priority / tags
 - **Drag & drop** — move cards between columns
-- **Stats panel** — total, active, offers, response rate, bar chart by status
+- **Stats panel** — response rate, offer count, bar chart by status
+- **Export / Import** — backup and restore as JSON, no account needed
 - **Dark mode** — toggle with persistence
-- **Export / Import** — backup and restore your data as JSON
-- **localStorage** — data persists between sessions, no backend needed
+- **localStorage** — fully client-side, no backend
 
-## Tech stack
+---
 
-- [Svelte 5](https://svelte.dev/) with runes (`$state`, `$derived`, `$effect`)
-- [Vite](https://vite.dev/)
+## Tech Stack
+
+- Svelte 5 (runes: `$state`, `$derived`, `$effect`)
+- Vite
 - Pure CSS — no UI framework
-- Deployed via GitHub Actions → GitHub Pages
+- GitHub Actions → GitHub Pages
 
-## Local development
+---
 
-```bash
-npm install
-npm run dev
-```
+## My work
 
-App runs at `http://localhost:5173/`
+This is part of my frontend portfolio. My main focus is Shopify theme development — Liquid, custom sections, OS 2.0, JavaScript, SCSS.
 
-## Build & deploy
-
-```bash
-npm run build   # outputs to /dist
-npm run preview # preview the production build locally
-```
-
-Deployment to GitHub Pages happens automatically on every push to `main` via `.github/workflows/deploy.yml`.
-
-## Data export & import
-
-All data is stored in `localStorage` — no account, no server. To back up or transfer your data:
-
-- **Export** — click the ↓ icon in the header to download a `.json` file with all your jobs
-- **Import** — click the ↑ icon and select a previously exported `.json` file to restore
-
-This lets you move data between browsers/devices or keep local backups.
+→ Full portfolio: [taras-polishchuk.github.io](https://taras-polishchuk.github.io)  
+→ Contact: [poli.taras.shchuk@gmail.com](mailto:poli.taras.shchuk@gmail.com)
 
