@@ -293,7 +293,6 @@
   .overlay-dismiss {
     position: fixed;
     inset: 0;
-    z-index: 150;
     background: transparent;
     border: none;
     cursor: default;
