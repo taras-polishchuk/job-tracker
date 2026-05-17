@@ -1,4 +1,4 @@
-import { loadJobs, saveJobs } from '../lib/storage.js';
+import { loadJobs, saveJobs, KEY } from '../lib/storage.js';
 import { generateId } from '../lib/utils.js';
 
 const DEFAULTS = {
@@ -52,8 +52,11 @@ class JobStore {
     try {
       const data = JSON.parse(str);
       if (!Array.isArray(data)) throw new Error('Expected an array');
+      // Write directly — errors propagate to catch so the user sees them
+      // instead of being silently swallowed by saveJobs's own try-catch.
+      // Save BEFORE updating reactive state to avoid any flush interference.
+      localStorage.setItem(KEY, JSON.stringify(data));
       this.jobs = data;
-      saveJobs(data);
       return { ok: true, count: data.length };
     } catch (e) {
       return { ok: false, error: e.message };

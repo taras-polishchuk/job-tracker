@@ -1,4 +1,4 @@
-const KEY = 'cv_tracker_v1';
+export const KEY = 'cv_tracker_v1';
 
 export function loadJobs() {
   try {
