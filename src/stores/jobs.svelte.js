@@ -53,7 +53,7 @@ class JobStore {
       const data = JSON.parse(str);
       if (!Array.isArray(data)) throw new Error('Expected an array');
       this.jobs = data;
-      saveJobs(this.jobs);
+      saveJobs(data);
       return { ok: true, count: data.length };
     } catch (e) {
       return { ok: false, error: e.message };
