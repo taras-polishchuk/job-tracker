@@ -83,7 +83,7 @@
     display: flex;
     flex-direction: column;
     transition: box-shadow 0.15s, border-color 0.15s, background 0.15s;
-    max-height: calc(100vh - 100px);
+    max-height: fit-content;
   }
 
   .column.drag-over {
