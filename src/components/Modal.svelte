@@ -69,7 +69,7 @@
   }
 
   function downloadResume() {
-    if (!resume) return;
+    if (!resume?.data) return;
     const a = document.createElement('a');
     a.href = resume.data;
     a.download = resume.name;

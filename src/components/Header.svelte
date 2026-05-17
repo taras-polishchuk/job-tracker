@@ -71,8 +71,8 @@
     const file = e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = () => {
-      const result = jobStore.importJSON(reader.result);
+    reader.onload = async () => {
+      const result = await jobStore.importJSON(reader.result);
       if (result.ok) {
         alert(`✓ Imported ${result.count} jobs`);
       } else {

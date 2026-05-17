@@ -1,6 +1,7 @@
 <script>
   import './app.css';
   import { uiStore } from './stores/ui.svelte.js';
+  import { jobStore } from './stores/jobs.svelte.js';
   import Header from './components/Header.svelte';
   import Board from './components/Board.svelte';
   import StatsPanel from './components/StatsPanel.svelte';
@@ -8,6 +9,11 @@
 
   $effect(() => {
     document.documentElement.setAttribute('data-theme', uiStore.darkMode ? 'dark' : 'light');
+  });
+
+  // Load resume blobs from IndexedDB into in-memory jobs after mount
+  $effect(() => {
+    jobStore.loadResumes();
   });
 
   let showBanner = $state(localStorage.getItem('localdata-notice-dismissed') !== '1');

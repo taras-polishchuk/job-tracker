@@ -11,7 +11,11 @@ export function loadJobs() {
 
 export function saveJobs(jobs) {
   try {
-    localStorage.setItem(KEY, JSON.stringify(jobs));
+    // Strip resume base64 data — stored in IndexedDB instead (avoids quota limits)
+    const stripped = jobs.map(j =>
+      j.resume?.data ? { ...j, resume: { name: j.resume.name, type: j.resume.type } } : j
+    );
+    localStorage.setItem(KEY, JSON.stringify(stripped));
   } catch (e) {
     console.warn('localStorage write failed:', e);
   }
