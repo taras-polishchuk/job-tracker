@@ -6,6 +6,52 @@
 
   let importInput = $state(null);
 
+  const AUTO_EXPORT_KEY = 'cv-tracker-last-auto-export';
+
+  function getTodayStr() {
+    return new Date().toISOString().slice(0, 10);
+  }
+
+  function msUntilMidnight() {
+    const now = new Date();
+    const midnight = new Date(now);
+    midnight.setHours(24, 0, 0, 0);
+    return midnight - now;
+  }
+
+  $effect(() => {
+    let timeoutId;
+
+    function maybeAutoExport() {
+      const today = getTodayStr();
+      if (localStorage.getItem(AUTO_EXPORT_KEY) !== today) {
+        exportData();
+        localStorage.setItem(AUTO_EXPORT_KEY, today);
+      }
+    }
+
+    function scheduleMidnight() {
+      timeoutId = setTimeout(() => {
+        maybeAutoExport();
+        scheduleMidnight();
+      }, msUntilMidnight());
+    }
+
+    function onVisibilityChange() {
+      if (document.visibilityState === 'visible') {
+        maybeAutoExport();
+      }
+    }
+
+    scheduleMidnight();
+    document.addEventListener('visibilitychange', onVisibilityChange);
+
+    return () => {
+      clearTimeout(timeoutId);
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+    };
+  });
+
   function exportData() {
     const json = jobStore.exportJSON();
     const blob = new Blob([json], { type: 'application/json' });
