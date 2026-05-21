@@ -31,7 +31,7 @@
 </script>
 
 <div
-  class="column"
+  class="column-shell"
   class:drag-over={isDragOver}
   role="list"
   aria-label="{status} column"
@@ -39,44 +39,57 @@
   ondragleave={onDragLeave}
   ondrop={onDrop}
 >
-  <div class="col-header" style="--col-color: {color}">
-    <div class="col-title">
-      <span class="col-dot"></span>
-      <span class="col-name">{status}</span>
-    </div>
-    <div class="col-meta">
-      <span class="col-count" title="{totalInCol} total in this stage">
-        {jobs.length}{jobs.length !== totalInCol ? `/${totalInCol}` : ''}
-      </span>
-      <button class="add-btn" onclick={() => uiStore.openAdd(status)} title="Add job to {status}">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-          <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-        </svg>
-      </button>
-    </div>
-  </div>
+  {#if uiStore.draggingId}
+    <div class="col-drop-lane" aria-hidden="true"></div>
+  {/if}
 
-  <div class="cards-list">
-    {#each jobs as job (job.id)}
-      <Card {job} />
-    {/each}
-
-    {#if jobs.length === 0}
-      <div class="col-empty">
-        {#if uiStore.hasActiveFilters}
-          <span>No matches</span>
-        {:else}
-          <span>Drop cards here</span>
-        {/if}
+  <div class="column" style="--col-color: {color}">
+    <div class="col-header">
+      <div class="col-title">
+        <span class="col-dot"></span>
+        <span class="col-name">{status}</span>
       </div>
-    {/if}
+      <div class="col-meta">
+        <span class="col-count" title="{totalInCol} total in this stage">
+          {jobs.length}{jobs.length !== totalInCol ? `/${totalInCol}` : ''}
+        </span>
+        <button class="add-btn" onclick={() => uiStore.openAdd(status)} title="Add job to {status}">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="cards-list">
+      {#each jobs as job (job.id)}
+        <Card {job} />
+      {/each}
+
+      {#if jobs.length === 0}
+        <div class="col-empty">
+          {#if uiStore.hasActiveFilters}
+            <span>No matches</span>
+          {:else}
+            <span>Drop cards here</span>
+          {/if}
+        </div>
+      {/if}
+    </div>
   </div>
 </div>
 
 <style>
-  .column {
+  .column-shell {
+    position: relative;
     width: var(--col-w, 272px);
     min-width: var(--col-w, 272px);
+    align-self: stretch;
+  }
+
+  .column {
+    position: relative;
+    z-index: 1;
     background: var(--surface-2);
     border: 1px solid var(--border);
     border-radius: var(--radius);
@@ -86,7 +99,21 @@
     max-height: fit-content;
   }
 
-  .column.drag-over {
+  .col-drop-lane {
+    position: absolute;
+    inset: 0;
+    border: 1.5px dashed transparent;
+    border-radius: var(--radius);
+    background: transparent;
+    pointer-events: none;
+    transition: box-shadow 0.15s, border-color 0.15s, background 0.15s;
+  }
+
+  .column-shell.drag-over .column {
+    border-color: var(--accent);
+  }
+
+  .column-shell.drag-over .col-drop-lane {
     border-color: var(--accent);
     box-shadow: 0 0 0 2px rgba(99,102,241,0.15);
     background: rgba(99,102,241,0.04);

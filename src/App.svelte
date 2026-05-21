@@ -7,6 +7,22 @@
   import StatsPanel from './components/StatsPanel.svelte';
   import Modal from './components/Modal.svelte';
 
+  const DRAG_SCROLL_EDGE = 88;
+  const DRAG_SCROLL_STEP = 22;
+
+  function getViewportScrollDelta(pointerY) {
+    if (pointerY < DRAG_SCROLL_EDGE) {
+      return -Math.ceil(((DRAG_SCROLL_EDGE - pointerY) / DRAG_SCROLL_EDGE) * DRAG_SCROLL_STEP);
+    }
+
+    const bottomEdge = window.innerHeight - DRAG_SCROLL_EDGE;
+    if (pointerY > bottomEdge) {
+      return Math.ceil(((pointerY - bottomEdge) / DRAG_SCROLL_EDGE) * DRAG_SCROLL_STEP);
+    }
+
+    return 0;
+  }
+
   $effect(() => {
     document.documentElement.setAttribute('data-theme', uiStore.darkMode ? 'dark' : 'light');
   });
@@ -14,6 +30,35 @@
   // Load resume blobs from IndexedDB into in-memory jobs after mount
   $effect(() => {
     jobStore.loadResumes();
+  });
+
+  $effect(() => {
+    if (!uiStore.draggingId) {
+      return;
+    }
+
+    let pointerY = window.innerHeight / 2;
+    let frameId = 0;
+
+    const onWindowDragOver = (event) => {
+      pointerY = event.clientY;
+    };
+
+    const tick = () => {
+      const deltaY = getViewportScrollDelta(pointerY);
+      if (deltaY !== 0) {
+        window.scrollBy(0, deltaY);
+      }
+      frameId = requestAnimationFrame(tick);
+    };
+
+    window.addEventListener('dragover', onWindowDragOver);
+    frameId = requestAnimationFrame(tick);
+
+    return () => {
+      window.removeEventListener('dragover', onWindowDragOver);
+      cancelAnimationFrame(frameId);
+    };
   });
 
   let showBanner = $state(localStorage.getItem('localdata-notice-dismissed') !== '1');

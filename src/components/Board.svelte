@@ -51,7 +51,7 @@
     padding: 16px 20px 24px;
     overflow-x: auto;
     flex: 1;
-    align-items: flex-start;
+    align-items: stretch;
     min-height: 0;
   }
 
