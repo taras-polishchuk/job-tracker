@@ -1,4 +1,4 @@
-<script>
+<script lang='ts'>
   import { jobStore } from '../stores/jobs.svelte.js';
   import { uiStore } from '../stores/ui.svelte.js';
   import Card from './Card.svelte';
@@ -7,22 +7,22 @@
 
   let isDragOver = $state(false);
 
-  function onDragOver(e) {
+  function onDragOver(e: DragEvent) {
     e.preventDefault();
     isDragOver = true;
   }
 
-  function onDragLeave(e) {
+  function onDragLeave(e: DragEvent) {
     // Only clear if leaving the column entirely
-    if (!e.currentTarget.contains(e.relatedTarget)) {
+    if (e.currentTarget && !(e.currentTarget as Element).contains(e.relatedTarget as Node)) {
       isDragOver = false;
     }
   }
 
-  function onDrop(e) {
+  function onDrop(e: DragEvent) {
     e.preventDefault();
     isDragOver = false;
-    const id = e.dataTransfer.getData('text/plain');
+    const id = e.dataTransfer?.getData('text/plain');
     if (id) {
       jobStore.moveToStatus(id, status);
     }
